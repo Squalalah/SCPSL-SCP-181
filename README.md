@@ -1,6 +1,6 @@
 # SCP-181
 
-- Description
+**Description**
 
 SCP-181 est une personne qui manipule les probabilités sans le vouloir, lui permettant d'avoir une chance inouie.
 Dans ce plugin, un Classe-D aléatoire le devient, et dispose de pouvoirs comme :
