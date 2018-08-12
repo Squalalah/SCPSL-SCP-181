@@ -1,6 +1,6 @@
-#SCP-181
+# SCP-181
 
-- Description
+**Description**
 
 SCP-181 est une personne qui manipule les probabilités sans le vouloir, lui permettant d'avoir une chance inouie.
 Dans ce plugin, un Classe-D aléatoire le devient, et dispose de pouvoirs comme :
@@ -10,15 +10,20 @@ Dans ce plugin, un Classe-D aléatoire le devient, et dispose de pouvoirs comme 
 
 Au fur et à mesure des essais, la chance de SCP-181 diminue.
 
+# Installation
 
-#Modification des probabilités de SCP-181
-
--1 Lancez le serveur une première fois avec le plugin
--2 Une fois fait, l'arrêter, puis modifier le fichier "181.txt" à la source du serveur
--3 Modifier uniquement les chiffres, et aucun nombre à virgule (nombre d'utilisations possibles avant que le pouvoir disparaisse)
+- Déplacez "SCP181Event.dll" dans le dossier "sm_plugins" de votre serveur
+- Lancez le serveur une première fois avec le plugin installé afin de générer le fichier de config du plugin
 
 
-#Fonctionnement des probabilités
+# Modification des probabilités de SCP-181
+
+- Lancez le serveur une première fois avec le plugin
+- Une fois fait, l'arrêter, puis modifier le fichier "181.txt" à la source du serveur
+- Modifier uniquement les chiffres, et aucun nombre à virgule (nombre d'utilisations possibles avant que le pouvoir disparaisse)
+
+
+# Fonctionnement des probabilités
 
 En partant du principe de cette configuration de 181.txt :
 - #max_181_dodge_tries:5
