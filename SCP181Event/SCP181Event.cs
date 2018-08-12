@@ -40,6 +40,7 @@ namespace SCP181
     {
         public override void OnDisable()
         {
+            this.Info("SCP-181's event unloaded successfully.");
         }
 
         public override void OnEnable()

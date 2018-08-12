@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 [assembly: AssemblyTitle("SCP181Event")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Plugin SCP-181 pour le jeu SCP:SL")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SCP181Event")]
