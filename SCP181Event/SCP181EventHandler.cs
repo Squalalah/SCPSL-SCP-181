@@ -14,6 +14,7 @@ namespace SCP181
         private List<Player> players; //liste des joueurs au début du round, initialisé dans OnRoundStart
         private int max_tries = 5; //nombre de tentatives maximum pour l'esquive d'attaques de SCP
         private int max_door_tries = 5; //nombre de tentatives maximum d'ouverture de portes restreintes
+        private int minimum_classe_d = 1;
         private int tries = 0; //nombre de tentatives d'esquive des attaques de SCP
         private int door_tries = 0; //nombre de tentatives d'ouvertures de portes restreintes
         public Player Playerchosen; //L'élu devenant SCP-181
@@ -26,7 +27,8 @@ namespace SCP181
             if (!System.IO.File.Exists("181.txt"))
             {
                 string text = "#max_181_dodge_tries:" + max_tries + System.Environment.NewLine
-                    + "#max_181_door_tries:" + max_door_tries;
+                    + "#max_181_door_tries:" + max_door_tries + System.Environment.NewLine
+                    + "#minimum_classe_d:" + minimum_classe_d;
                 System.IO.File.WriteAllText("181.txt", text);
             }
             else
@@ -34,7 +36,7 @@ namespace SCP181
 
                 string[] content = System.IO.File.ReadAllLines("181.txt");
                 string[] value;
-                if (content.Length != 2) Rewritefile();
+                if (content.Length != 3) Rewritefile();
                 else
                 {
                     foreach (string s in content)
@@ -44,6 +46,7 @@ namespace SCP181
                         {
                             if (value[0] == "#max_181_dodge_tries") max_tries = int.Parse(value[1]);
                             else if (value[0] == "#max_181_door_tries") max_door_tries = int.Parse(value[1]);
+                            else if (value[0] == "#minimum_classe_d") minimum_classe_d = int.Parse(value[1]);
                             else Rewritefile();
                         }
                         catch { Rewritefile(); }
@@ -57,7 +60,8 @@ namespace SCP181
         public void Rewritefile()
         {
             string text = "#max_181_dodge_tries:" + max_tries + System.Environment.NewLine
-                       + "#max_181_door_tries:" + max_door_tries;
+                    + "#max_181_door_tries:" + max_door_tries + System.Environment.NewLine
+                    + "#minimum_classe_d:" + minimum_classe_d;
             System.IO.File.WriteAllText("181.txt", text);
         }
 
@@ -68,29 +72,27 @@ namespace SCP181
             plugin.Info("On regarde s'il y a des classe-D)");
             List<Player> list = new List<Player>();
             int lol;
-            if (players.Count == 0) plugin.Info("Pas de Classe-D pour devenir SCP-181"); //S'il n'y a aucun joueur, on log le fait qu'il n'y a aucun classe D
-            plugin.Info("Pour chaque joueur)");
-            foreach (Player p in players) //Pour chaque joueur stocké dans "players"
-            {
-                plugin.Info("Si le joueur n'est pas un classe-D, on le retire de la liste");
-                if (p.TeamRole.Role == Role.CLASSD) list.Add(p);//players.RemoveAt(players.IndexOf(p)); //Si son rôle n'est pas classe-D, on le retire de "players"
-            }
-            if (list.Count == 1) Playerchosen = list[0];
+            if (players.Count == 0) plugin.Info("Pas assez de Classe-D pour devenir SCP-181");
             else
             {
-                plugin.Info("Ce joueur devient SCP");
-                
-                lol = Random.Range(0, list.Count);
-                Playerchosen = list[lol]; //"players" ne contenant que des classes D, nous tirons une personne au hasard entre 0 et le nombre de Classe-D en début de round.
+                //S'il n'y a aucun joueur, on log le fait qu'il n'y a aucun classe D
+                plugin.Info("Pour chaque joueur)");
+                foreach (Player p in players) //Pour chaque joueur stocké dans "players"
+                {
+                    plugin.Info("Si le joueur n'est pas un classe-D, on le retire de la liste");
+                    if (p.TeamRole.Role == Role.CLASSD) list.Add(p);//players.RemoveAt(players.IndexOf(p)); //Si son rôle n'est pas classe-D, on le retire de "players"
+                }
+                if (list.Count == 1) Playerchosen = list[0];
+                else if (list.Count < minimum_classe_d) plugin.Info("Pas assez de classe D pour faire spawn SCP-181-");
+                else
+                {
+                    lol = Random.Range(0, list.Count);
+                    Playerchosen = list[lol]; //"players" ne contenant que des classes D, nous tirons une personne au hasard entre 0 et le nombre de Classe-D en début de round.
+                    plugin.Info(Playerchosen.Name + " devient SCP-181.");
+                    Playerchosen.GiveItem(ItemType.CUP); //On donne à l'élu un objet impossible à obtenir en jeu
+                    Playerchosen.SendConsoleMessage("Tu es SCP 181."); //On log le fait qu'il le devienne
+                }               
             }
-
-
-            plugin.Info("Nombre de joueurs : " + list.Count + " // joueur selectionné : " + Playerchosen.Name);
-            plugin.Info("On recupère le playerid du joueur");
-            plugin.Info("playerid scp-181 : " + Playerchosen.PlayerId.ToString());
-            Playerchosen.GiveItem(ItemType.CUP); //On donne à l'élu un objet impossible à obtenir en jeu
-            //Playerchosen.GiveItem(ItemType.GUARD_KEYCARD); //On donne a l'élu une des spécificités du SCP, de la chance d'avoir du carte !
-            Playerchosen.SendConsoleMessage("Tu es SCP 181."); //On log le fait qu'il le devienne
         }
 
         public void OnRoundEnd(RoundEndEvent ev)
