@@ -10,6 +10,11 @@ Dans ce plugin, un Classe-D aléatoire le devient, et dispose de pouvoirs comme 
 
 Au fur et à mesure des essais, la chance de SCP-181 diminue.
 
+# Installation
+
+- Déplacez "SCP181Event.dll" dans le dossier "sm_plugins" de votre serveur
+- Lancez le serveur une première fois avec le plugin installé afin de générer le fichier de config du plugin
+
 
 # Modification des probabilités de SCP-181
 
