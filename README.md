@@ -13,9 +13,9 @@ Au fur et à mesure des essais, la chance de SCP-181 diminue.
 
 # Modification des probabilités de SCP-181
 
--1 Lancez le serveur une première fois avec le plugin
--2 Une fois fait, l'arrêter, puis modifier le fichier "181.txt" à la source du serveur
--3 Modifier uniquement les chiffres, et aucun nombre à virgule (nombre d'utilisations possibles avant que le pouvoir disparaisse)
+- Lancez le serveur une première fois avec le plugin
+- Une fois fait, l'arrêter, puis modifier le fichier "181.txt" à la source du serveur
+- Modifier uniquement les chiffres, et aucun nombre à virgule (nombre d'utilisations possibles avant que le pouvoir disparaisse)
 
 
 # Fonctionnement des probabilités
