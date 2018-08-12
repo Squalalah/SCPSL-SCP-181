@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCP181Event", "SCP181Event\SCP181Event.csproj", "{7722245C-F449-493C-A893-23DFB591B357}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7722245C-F449-493C-A893-23DFB591B357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7722245C-F449-493C-A893-23DFB591B357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7722245C-F449-493C-A893-23DFB591B357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7722245C-F449-493C-A893-23DFB591B357}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {427EF17C-3F15-41D3-93B1-C5C52D58F476}
+	EndGlobalSection
+EndGlobal
