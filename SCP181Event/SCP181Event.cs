@@ -13,7 +13,7 @@ namespace SCP181
         name = "SCP-181",
         description = "Un Classe-D aléatoire devient SCP-181 et défie les lois de la probabilité.",
         id = "squal.181.event",
-        version = "1.0.2",
+        version = "1.1.0",
         SmodMajor = 3,
         SmodMinor = 1,
         SmodRevision = 12
@@ -54,16 +54,7 @@ namespace SCP181
             // Register with priority
             // On enregistre chaque EventHandler qu'on a utilisé.
             this.AddEventHandlers(eventh, Priority.Highest);
-            /*
-            this.AddEventHandler(typeof(IEventHandlerRoundStart), eventh, Priority.Highest);
-            this.AddEventHandler(typeof(IEventHandlerRoundEnd), eventh, Priority.Highest);
-            this.AddEventHandler(typeof(IEventHandlerPlayerDropItem), eventh, Priority.Highest);
-            this.AddEventHandler(typeof(IEventHandlerPlayerHurt), eventh, Priority.Highest);
-            this.AddEventHandler(typeof(IEventHandlerPocketDimensionEnter), eventh, Priority.Highest);
-            this.AddEventHandler(typeof(IEventHandlerPlayerDie), eventh, Priority.Highest);
-            this.AddEventHandler(typeof(IEventHandlerDoorAccess), eventh, Priority.Highest);
-            this.AddEventHandler(typeof(IEventHandlerSetRole), eventh, Priority.Highest);
-            */
+            this.AddCommand("scp181", eventh);
         }
     }
 }

@@ -3,13 +3,17 @@ using Smod2.Attributes;
 using Smod2.Events;
 using Smod2.API;
 using Smod2.EventHandlers;
+using Smod2.Commands;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace SCP181
 {
-    class SCP181EventHandler : IEventHandlerRoundStart, IEventHandlerRoundEnd, IEventHandlerPlayerDropItem, IEventHandlerPlayerHurt, IEventHandlerPocketDimensionEnter, IEventHandlerPlayerDie, IEventHandlerDoorAccess, IEventHandlerSetRole
+    class SCP181EventHandler : IEventHandlerRoundStart, IEventHandlerRoundEnd, IEventHandlerPlayerDropItem, IEventHandlerPlayerHurt, IEventHandlerPocketDimensionEnter, IEventHandlerPlayerDie, IEventHandlerDoorAccess, IEventHandlerSetRole, ICommandHandler
     {
+
+        #region Vars
+
         private Plugin plugin;
         public Player Playerchosen; //L'élu devenant SCP-181
         private List<Player> players; //liste des joueurs au début du round, initialisé dans OnRoundStart
@@ -19,19 +23,16 @@ namespace SCP181
         private int tries = 0; //nombre de tentatives d'esquive des attaques de SCP
         private int door_tries = 0; //nombre de tentatives d'ouvertures de portes restreintes
         
+        #endregion
+
+        #region Class SCP181EventHandler
 
         public SCP181EventHandler(Plugin plugin)
         {
             this.plugin = plugin;
 
             plugin.Info("SCP181EventHandler créer");
-            if (!System.IO.File.Exists("181.txt"))
-            {
-                string text = "#max_181_dodge_tries:" + max_tries + System.Environment.NewLine
-                    + "#max_181_door_tries:" + max_door_tries + System.Environment.NewLine
-                    + "#minimum_classe_d:" + minimum_classe_d;
-                System.IO.File.WriteAllText("181.txt", text);
-            }
+            if (!System.IO.File.Exists("181.txt")) Rewritefile();
             else
             {
 
@@ -59,6 +60,13 @@ namespace SCP181
             }
         }
 
+        #endregion
+
+        #region Custom Rewritefile()
+
+        /// <summary>
+        /// Permet de réecrire le fichier 181.txt en cas de problème de mauvaise édition du fichier
+        /// </summary>
         public void Rewritefile()
         {
             string text = "#max_181_dodge_tries:" + max_tries + System.Environment.NewLine
@@ -66,6 +74,10 @@ namespace SCP181
                     + "#minimum_classe_d:" + minimum_classe_d;
             System.IO.File.WriteAllText("181.txt", text);
         }
+
+        #endregion
+
+        #region OnRoundStart
 
         public void OnRoundStart(RoundStartEvent ev)
         {
@@ -92,6 +104,10 @@ namespace SCP181
             }
         }
 
+        #endregion
+
+        #region OnRoundEnd
+
         public void OnRoundEnd(RoundEndEvent ev)
         {
             //A la fin du round, on supprime toutes les informations sur le SCP
@@ -101,12 +117,20 @@ namespace SCP181
             door_tries = 0;
         }
 
+        #endregion
+
+        #region OnPlayerDropItem
+
         public void OnPlayerDropItem(PlayerDropItemEvent ev)
         {
             plugin.Info(ev.Player.Name + "jette un objet au sol");
             if (ev.Item.ItemType == ItemType.CUP && ev.Player.TeamRole.Role == Role.CLASSD) ev.Player.GiveItem(ItemType.CUP); //Etant donné que le gobelet permet de savoir si un joueur est SCP ou non, on redonnera l'objet au joueur si celui-ci veut le retirer de son inventaire
         }
-        
+
+        #endregion
+
+        #region OnPlayerHurt
+
         public void OnPlayerHurt(PlayerHurtEvent ev)
         {
             //plugin.Info(ev.Attacker.Name + " a tenté d'attaquer " + ev.Player.Name);
@@ -132,6 +156,10 @@ namespace SCP181
             }
         }
 
+        #endregion
+
+        #region OnPocketDimensionEnter
+
         public void OnPocketDimensionEnter(PlayerPocketDimensionEnterEvent ev)
         {
             /* plugin.Info("Le joueur entre dans la dimension");
@@ -150,11 +178,18 @@ namespace SCP181
              }*/
         }
 
+        #endregion
+
+        #region OnPlayerDie
+
         public void OnPlayerDie(PlayerDeathEvent ev)
         {
             if(ev.Player == Playerchosen) Playerchosen = null;
         }
 
+        #endregion
+
+        #region OnDoorAccess
         public void OnDoorAccess(PlayerDoorAccessEvent ev)
         {
             plugin.Info(Playerchosen.Name);
@@ -180,12 +215,41 @@ namespace SCP181
                 }
             }
         }
+        #endregion
 
+        #region OnSetRole
         public void OnSetRole(PlayerSetRoleEvent ev)
         {
             if (ev.Player.HasItem(ItemType.CUP) && ev.Player == Playerchosen) ev.Player.GetInventory().RemoveAt(ev.Player.GetItemIndex(ItemType.CUP));
         }
+        #endregion
 
+        #region Commands
+        public string GetCommandDescription()
+        {
+            // This prints when someone types HELP HELLO
+            return "Savoir qui joue SCP-181";
+        }
+
+        public string GetUsage()
+        {
+            // This prints when someone types HELP HELLO
+            return "SCP181";
+        }
+
+        public string[] OnCall(ICommandSender sender, string[] args)
+        {
+            // This will print 3 lines in console.
+            try
+            {
+                return new string[] { "Qui joue SCP-181 ?", Playerchosen.Name + " joue SCP-181 (" + Playerchosen.SteamId + ")" };
+            }
+            catch
+            {
+                return new string[] { "Qui joue SCP-181 ?", "Personne ne joue SCP-181" };
+            }
+        }
+        #endregion
     }
 
 }
