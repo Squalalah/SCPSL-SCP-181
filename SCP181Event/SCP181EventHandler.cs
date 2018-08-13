@@ -99,7 +99,7 @@ namespace SCP181
                     index = Random.Range(0, list.Count);
                     Playerchosen = list[index]; //"players" ne contenant que des classes D, nous tirons une personne au hasard entre 0 et le nombre de Classe-D en début de round.
                     plugin.Info(Playerchosen.Name + " devient SCP-181.");
-                    Playerchosen.GiveItem(ItemType.CUP); //On donne à l'élu un objet impossible à obtenir en jeu
+                    //Playerchosen.GiveItem(ItemType.CUP); //On donne à l'élu un objet impossible à obtenir en jeu
                 }               
             }
         }
@@ -123,8 +123,8 @@ namespace SCP181
 
         public void OnPlayerDropItem(PlayerDropItemEvent ev)
         {
-            plugin.Info(ev.Player.Name + "jette un objet au sol");
-            if (ev.Item.ItemType == ItemType.CUP && ev.Player.TeamRole.Role == Role.CLASSD) ev.Player.GiveItem(ItemType.CUP); //Etant donné que le gobelet permet de savoir si un joueur est SCP ou non, on redonnera l'objet au joueur si celui-ci veut le retirer de son inventaire
+            //plugin.Info(ev.Player.Name + "jette un objet au sol");
+            //if (ev && ev.Player.TeamRole.Role == Role.CLASSD) ev.Player.GiveItem(ItemType.CUP); //Etant donné que le gobelet permet de savoir si un joueur est SCP ou non, on redonnera l'objet au joueur si celui-ci veut le retirer de son inventaire
         }
 
         #endregion
@@ -136,7 +136,7 @@ namespace SCP181
             //plugin.Info(ev.Attacker.Name + " a tenté d'attaquer " + ev.Player.Name);
             //plugin.Info("Damage recieved : " + ev.Damage);
             //plugin.Info("DamageType : " + ev.DamageType);
-            if (Playerchosen == ev.Player)
+            if (Playerchosen.SteamId == ev.Player.SteamId)
             {
                 //plugin.Info("Le joueur a une CUP");
                 //plugin.Info("teamrole attacker = " + ev.Attacker.TeamRole.Name);
@@ -184,17 +184,18 @@ namespace SCP181
 
         public void OnPlayerDie(PlayerDeathEvent ev)
         {
-            if(ev.Player == Playerchosen) Playerchosen = null;
+            if(ev.Player.SteamId == Playerchosen.SteamId) Playerchosen = null;
         }
 
         #endregion
 
         #region OnDoorAccess
+
         public void OnDoorAccess(PlayerDoorAccessEvent ev)
         {
-            plugin.Info(Playerchosen.Name);
-            if (Playerchosen == ev.Player)
+            if (Playerchosen.SteamId == ev.Player.SteamId)
             {
+                plugin.Info("Playerchosen == ev.player");
                 try
                 {
                     Smod2.API.Item itemhandle = ev.Player.GetCurrentItem();
@@ -207,7 +208,6 @@ namespace SCP181
                         if (Random.Range(0, max_door_tries + 1) > door_tries) //On génère une chance aléatoire d'ouvrir la porte sans la carte necessaire
                         {
                             ev.Allow = true;
-                            plugin.Info(ev.Player.Name + " a reussit à ouvrir une porte sans la carte adéquate.");
                         }
                         door_tries++;
                         //plugin.Info(ev.Player.Name + " n'a plus que " + (max_door_tries - door_tries) + " chances sur " + max_door_tries + " d'ouvrir des portes vérouillés sans carte");
@@ -218,13 +218,15 @@ namespace SCP181
         #endregion
 
         #region OnSetRole
+
         public void OnSetRole(PlayerSetRoleEvent ev)
         {
-            if (ev.Player.HasItem(ItemType.CUP) && ev.Player == Playerchosen) ev.Player.GetInventory().RemoveAt(ev.Player.GetItemIndex(ItemType.CUP));
+            if (ev.Player.HasItem(ItemType.CUP) && ev.Player.SteamId == Playerchosen.SteamId) ev.Player.GetInventory().RemoveAt(ev.Player.GetItemIndex(ItemType.CUP));
         }
         #endregion
 
         #region Commands
+
         public string GetCommandDescription()
         {
             // This prints when someone types HELP HELLO
