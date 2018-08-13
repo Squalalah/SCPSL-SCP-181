@@ -1,5 +1,9 @@
 # SCP-181
 
+-----------------
+
+**TRADUCTION FRANCAISE**
+
 **Description**
 
 SCP-181 est une personne qui manipule les probabilités sans le vouloir, lui permettant d'avoir une chance inouie.
@@ -39,3 +43,43 @@ Puis, sa chance tombera à 3 chances sur 5.
 - Si on a de base 5 tentatives pour esquiver un SCP, chaque essai fait perdre 20% de reussite à la suivante.
 - Si on a de base 10 tentatives pour ouvrir une porte, chaque essai fait perdre 10% de reussite à la suivante.
 
+
+-----------------
+
+**ENGLISH TRANSLATION**
+
+**Description**
+
+SCP-181 is a man who can manipulate probabilities without knowing it, allowing him to have a huge luck.
+In this plugin, a random D-class become him, and have powers like :
+
+- Dodge an incoming SCP attack
+- Opens restricted doors without the required card
+
+The more you try, the less chance you will have.
+
+# Installation
+
+- Move "SCP181Event.dll" in "sm_plugins" server's folder.
+- Launch the server once to initialize the plugin's config (181.txt)
+
+
+# SCP-181's probabilities modification
+
+- Stop the server, and modify "181.txt" in server's root folder
+- Please modify numbers only (no float), those are the maximum attempt of SCP-181
+
+
+# How probabilities works
+
+Example of "181.txt"'s configuration :
+- #max_181_dodge_tries:5
+- #max_181_door_tries:10
+- #minimum_classe_d:1
+
+The first time a SCP attack the player, this one have 5 chances out of 5 to dodge it (the first attack always will be cancelled)
+Then, the player will have 4 chances out of 5 to dodge a SCP's attack.
+
+
+- If you have 5 attempts to dodge a SCP, each attempt will reduce the chance of dodging the next SCP attack by 20%.
+- If you have 10 attempts to open a door, each attempt will reduce the chance of opening a restricted door by 10%.
