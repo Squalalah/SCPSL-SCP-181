@@ -93,7 +93,7 @@ namespace SCP181
                     if (p.TeamRole.Role == Role.CLASSD) list.Add(p); //players.RemoveAt(players.IndexOf(p)); //Si son rôle n'est pas classe-D, on le retire de "players"
                 }
                 if (list.Count == 1) Playerchosen = list[0];
-                else if (list.Count < minimum_classe_d) plugin.Info("Pas assez de classe D pour faire spawn SCP-181-");
+                if (list.Count < minimum_classe_d) plugin.Info("Pas assez de classe D pour faire spawn SCP-181-");
                 else
                 {
                     index = Random.Range(0, list.Count);
