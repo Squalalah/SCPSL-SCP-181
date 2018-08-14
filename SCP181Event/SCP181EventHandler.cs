@@ -6,6 +6,8 @@ using Smod2.EventHandlers;
 using Smod2.Commands;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.IO;
 
 namespace SCP181
 {
@@ -32,32 +34,8 @@ namespace SCP181
             this.plugin = plugin;
 
             plugin.Info("SCP181EventHandler créer");
-            if (!System.IO.File.Exists("181.txt")) Rewritefile();
-            else
-            {
-
-                string[] content = System.IO.File.ReadAllLines("181.txt");
-                string[] value;
-                if (content.Length != 3) Rewritefile();
-                else
-                {
-                    foreach (string s in content)
-                    {
-                        value = s.Split(':');
-                        try
-                        {
-                            if (value[0] == "#max_181_dodge_tries") max_tries = int.Parse(value[1]);
-                            else if (value[0] == "#max_181_door_tries") max_door_tries = int.Parse(value[1]);
-                            else if (value[0] == "#minimum_classe_d") minimum_classe_d = int.Parse(value[1]);
-                            else Rewritefile();
-                        }
-                        catch { Rewritefile(); }
-                    }
-                }
-                plugin.Info("Le nombre de tentative d'esquive de SCP-181 est fixé à : " + max_tries);
-                plugin.Info("Le nombre de tentative d'ouverture de portes de SCP-181 est fixé à : " + max_door_tries);
-                plugin.Info("Le nombre minimum de classe pour le spawn de SCP-181 est fixé à : " + minimum_classe_d);
-            }
+            if (!System.IO.File.Exists("squal_plugins_conf/181.txt")) Rewritefile();
+            else ReadFile();
         }
 
         #endregion
@@ -72,9 +50,37 @@ namespace SCP181
             string text = "#max_181_dodge_tries:" + max_tries + System.Environment.NewLine
                     + "#max_181_door_tries:" + max_door_tries + System.Environment.NewLine
                     + "#minimum_classe_d:" + minimum_classe_d;
-            System.IO.File.WriteAllText("181.txt", text);
+            if (!Directory.Exists("squal_plugins_conf")) Directory.CreateDirectory("squal_plugins_conf");
+            System.IO.File.WriteAllText("squal_plugins_conf/181.txt", text);
         }
 
+        #endregion
+
+        #region ReadFile
+        public void ReadFile()
+        {
+            string[] content = System.IO.File.ReadAllLines("squal_plugins_conf/181.txt");
+            string[] value;
+            if (content.Length != 3) Rewritefile();
+            else
+            {
+                foreach (string s in content)
+                {
+                    value = s.Split(':');
+                    try
+                    {
+                        if (value[0] == "#max_181_dodge_tries") max_tries = int.Parse(value[1]);
+                        else if (value[0] == "#max_181_door_tries") max_door_tries = int.Parse(value[1]);
+                        else if (value[0] == "#minimum_classe_d") minimum_classe_d = int.Parse(value[1]);
+                        else Rewritefile();
+                    }
+                    catch { Rewritefile(); }
+                }
+            }
+            plugin.Info("Le nombre de tentative d'esquive de SCP-181 est fixé à : " + max_tries);
+            plugin.Info("Le nombre de tentative d'ouverture de portes de SCP-181 est fixé à : " + max_door_tries);
+            plugin.Info("Le nombre minimum de classe pour le spawn de SCP-181 est fixé à : " + minimum_classe_d);
+        }
         #endregion
 
         #region OnRoundStart
@@ -96,7 +102,7 @@ namespace SCP181
                 if (list.Count < minimum_classe_d) plugin.Info("Pas assez de classe D pour faire spawn SCP-181-");
                 else
                 {
-                    index = Random.Range(0, list.Count);
+                    index = UnityEngine.Random.Range(0, list.Count);
                     Playerchosen = list[index]; //"players" ne contenant que des classes D, nous tirons une personne au hasard entre 0 et le nombre de Classe-D en début de round.
                     plugin.Info(Playerchosen.Name + " devient SCP-181.");
                     //Playerchosen.GiveItem(ItemType.CUP); //On donne à l'élu un objet impossible à obtenir en jeu
@@ -145,7 +151,7 @@ namespace SCP181
                 if (ev.Attacker.TeamRole.Team == Smod2.API.Team.SCP || ev.DamageType == DamageType.SCP_096) //Si la personne ayant touché Player est un SCP
                 {
                     //On calcule une chance aléatoire afin de savoir si SCP-181 va esquiver le coup ou pas
-                    if (Random.Range(0, max_tries) > tries) //S'il y arrive     
+                    if (UnityEngine.Random.Range(0, max_tries) > tries) //S'il y arrive     
                     {
                         ev.Player.AddHealth((int)ev.Damage);
                         //plugin.Info(Playerchosen.Name + " a reussit à esquiver de justesse une attaque de SCP");
@@ -205,7 +211,7 @@ namespace SCP181
                 {
                     if (ev.Door.Permission.Length > 0) //Si la porte en question a des permissions (carte obligatoire)
                     {
-                        if (Random.Range(0, max_door_tries + 1) > door_tries) //On génère une chance aléatoire d'ouvrir la porte sans la carte necessaire
+                        if (UnityEngine.Random.Range(0, max_door_tries + 1) > door_tries) //On génère une chance aléatoire d'ouvrir la porte sans la carte necessaire
                         {
                             ev.Allow = true;
                         }
