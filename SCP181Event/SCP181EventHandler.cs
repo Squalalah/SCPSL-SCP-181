@@ -34,7 +34,7 @@ namespace SCP181
             this.plugin = plugin;
 
             plugin.Info("SCP181EventHandler créer");
-            if (!System.IO.File.Exists("squal_plugins_conf/181.txt")) Rewritefile();
+            if (!System.IO.File.Exists("squal_plugins_conf/SCP181Event.txt")) Rewritefile();
             else ReadFile();
         }
 
@@ -43,7 +43,7 @@ namespace SCP181
         #region Custom Rewritefile()
 
         /// <summary>
-        /// Permet de réecrire le fichier 181.txt en cas de problème de mauvaise édition du fichier
+        /// Permet de réecrire le fichier SCP181Event.txt en cas de problème de mauvaise édition du fichier
         /// </summary>
         public void Rewritefile()
         {
@@ -51,7 +51,10 @@ namespace SCP181
                     + "#max_181_door_tries:" + max_door_tries + System.Environment.NewLine
                     + "#minimum_classe_d:" + minimum_classe_d;
             if (!Directory.Exists("squal_plugins_conf")) Directory.CreateDirectory("squal_plugins_conf");
-            System.IO.File.WriteAllText("squal_plugins_conf/181.txt", text);
+            System.IO.File.WriteAllText("squal_plugins_conf/SCP181Event.txt", text);
+            plugin.Info("Le nombre de tentative d'esquive de SCP-181 est fixé à : " + max_tries);
+            plugin.Info("Le nombre de tentative d'ouverture de portes de SCP-181 est fixé à : " + max_door_tries);
+            plugin.Info("Le nombre minimum de classe pour le spawn de SCP-181 est fixé à : " + minimum_classe_d);
         }
 
         #endregion
@@ -59,7 +62,7 @@ namespace SCP181
         #region ReadFile
         public void ReadFile()
         {
-            string[] content = System.IO.File.ReadAllLines("squal_plugins_conf/181.txt");
+            string[] content = System.IO.File.ReadAllLines("squal_plugins_conf/SCP181Event.txt");
             string[] value;
             if (content.Length != 3) Rewritefile();
             else
