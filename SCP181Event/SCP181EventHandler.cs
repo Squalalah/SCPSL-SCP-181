@@ -50,7 +50,7 @@ namespace SCP181
                 minimum_classe_d = plugin.GetConfigInt("minimum_classe_d");
 
                 List<Player> list = new List<Player>();
-                if (players.Count == 0) plugin.Info("Pas assez de joueurs pour devenir SCP-181");
+                if (players.Count == 0) plugin.Info("Not enough players to spawn SCP-181");
                 else
                 {
                     //S'il n'y a aucun joueur, on log le fait qu'il n'y a aucun classe D
@@ -59,12 +59,12 @@ namespace SCP181
                         if (p.TeamRole.Role == Role.CLASSD) list.Add(p); //players.RemoveAt(players.IndexOf(p)); //Si son rôle n'est pas classe-D, on le retire de "players"
                     }
                     if (list.Count == 1) Playerchosen = list[0];
-                    if (list.Count < minimum_classe_d) plugin.Info("Pas assez de classe D pour faire spawn SCP-181-");
+                    if (list.Count < minimum_classe_d) plugin.Info("Not enough ClassD to spawn SCP-181");
                     else
                     {
                         int index = UnityEngine.Random.Range(0, list.Count);
                         Playerchosen = list[index]; //"players" ne contenant que des classes D, nous tirons une personne au hasard entre 0 et le nombre de Classe-D en début de round.
-                        plugin.Info(Playerchosen.Name + " devient SCP-181.");
+                        plugin.Info(Playerchosen.Name + " becomes SCP-181.");
                         Playerchosen.GiveItem(ItemType.CUP); //On donne à l'élu un objet impossible à obtenir en jeu
                     }
                 }
@@ -106,32 +106,37 @@ namespace SCP181
         {
             if (enabled)
             {
-                //plugin.Info(ev.Attacker.Name + " a tenté d'attaquer " + ev.Player.Name);
-                //plugin.Info("Damage recieved : " + ev.Damage);
+                //plugin.Info(ev.Attacker.Name + " attacked " + ev.Player.Name);
+                //plugin.Info("Damage received : " + ev.Damage);
                 //plugin.Info("DamageType : " + ev.DamageType);
                 if (Playerchosen.SteamId == ev.Player.SteamId)
                 {
-                    //plugin.Info("Le joueur a une CUP");
+                    //plugin.Info("Le joueur has a CUP");
                     //plugin.Info("teamrole attacker = " + ev.Attacker.TeamRole.Name);
                     //plugin.Info("team attacker = " + ev.Attacker.TeamRole.Team);
-                    if (ev.DamageType == DamageType.POCKET && ev.Damage == 1) return;
-                    if (ev.Attacker.TeamRole.Team == Smod2.API.Team.SCP || ev.DamageType == DamageType.SCP_096) //Si la personne ayant touché Player est un SCP
+                    if (ev.DamageType != DamageType.POCKET && ev.Damage != 1)//If the player is in the pocket dimension, his luck doesn't work.
                     {
-                        //On calcule une chance aléatoire afin de savoir si SCP-181 va esquiver le coup ou pas
-                        if (UnityEngine.Random.Range(0, max_tries) > tries) //S'il y arrive     
+                        if (ev.Attacker.TeamRole.Team == Smod2.API.Team.SCP || ev.DamageType == DamageType.SCP_096) //If the attacker is a SCP
                         {
-                            ev.Player.AddHealth((int)ev.Damage);
-                            //plugin.Info(Playerchosen.Name + " a reussit à esquiver de justesse une attaque de SCP");
+                            if (max_tries != 0)
+                            {
+                                //On calcule une chance aléatoire afin de savoir si SCP-181 va esquiver le coup ou pas
+                                if (UnityEngine.Random.Range(0, max_tries) > tries) //S'il y arrive     
+                                {
+                                    ev.Damage = 0;
+                                    //plugin.Info(Playerchosen.Name + " successfully dodged scp's attack.");
+                                }
+                                tries++;
+                                //plugin.Info(Playerchosen.Name + " only have " + (max_tries - tries) + " chances on " + max_tries + " to dodge scp's attacks.");
+                            }
                         }
-                        tries++;
-                        //plugin.Info(Playerchosen.Name + " n'a plus que " + (max_tries - tries) + " chances sur " + max_tries + " d'esquiver les coups des SCP");
                     }
+                    
                 }
             }
         }
 
         #endregion
-
 
         #region OnPlayerDie
 
@@ -156,18 +161,22 @@ namespace SCP181
                     try
                     {
                         Smod2.API.Item itemhandle = ev.Player.GetCurrentItem();
-                        //plugin.Info("Objet tenu par le D-boy : " + itemhandle);
+                        //plugin.Info("Object held by the player : " + itemhandle);
                     }
                     catch
                     {
-                        if (ev.Door.Permission.Length > 0) //Si la porte en question a des permissions (carte obligatoire)
+                        if (ev.Door.Permission.Length > 0) //If the door has permissions (restricted card)
                         {
-                            if (UnityEngine.Random.Range(0, max_door_tries + 1) > door_tries) //On génère une chance aléatoire d'ouvrir la porte sans la carte necessaire
+                            if(max_door_tries != 0)
                             {
-                                ev.Allow = true;
+                                if (UnityEngine.Random.Range(0, max_door_tries + 1) > door_tries)
+                                {
+                                    ev.Allow = true;
+                                }
+                                door_tries++;
                             }
-                            door_tries++;
-                            //plugin.Info(ev.Player.Name + " n'a plus que " + (max_door_tries - door_tries) + " chances sur " + max_door_tries + " d'ouvrir des portes vérouillés sans carte");
+                            
+                            //plugin.Info(ev.Player.Name + " only have " + (max_door_tries - door_tries) + " chances on " + max_door_tries + " to open restricted doors without card");
                         }
                     }
                 }
@@ -188,7 +197,7 @@ namespace SCP181
         public string GetCommandDescription()
         {
             // This prints when someone types HELP HELLO
-            return "Savoir qui joue SCP-181";
+            return "Knows who play SCP-181";
         }
 
         public string GetUsage()
@@ -204,13 +213,13 @@ namespace SCP181
             {
                 if (enabled)
                 {
-                    return new string[] { "Qui joue SCP-181 ?", Playerchosen.Name + " joue SCP-181 (" + Playerchosen.SteamId + ")" };
+                    return new string[] { "Who plays SCP-181 ?", Playerchosen.Name + " plays SCP-181 (" + Playerchosen.SteamId + ")" };
                 }
-                else return new string[] { "Qui joue SCP-181 ?", "Le plugin est désactivé." };
+                else return new string[] { "Who plays SCP-181 ?", "Plugin disabled." };
             }
             catch
             {
-                return new string[] { "Qui joue SCP-181 ?", "Personne ne joue SCP-181" };
+                return new string[] { "Who plays SCP-181 ?", "Nobody's playing SCP-181" };
             }
         }
         #endregion
