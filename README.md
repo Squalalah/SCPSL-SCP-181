@@ -30,8 +30,9 @@ Au fur et à mesure des essais, la chance de SCP-181 diminue.
 # Fonctionnement des probabilités
 
 En partant du principe de cette configuration de 181.txt :
-- #max_181_dodge_tries:5
-- #max_181_door_tries:10
+- max_181_dodge_tries: 5
+- max_181_door_tries: 10
+- minimum_classe_d: 1
 
 La première fois qu'un SCP touche le SCP-181, celui-ci a 5 chances sur 5 d'esquiver le coup (le premier sera donc annulé dans tout les cas)
 Puis, sa chance tombera à 4 chances sur 5.
@@ -42,7 +43,7 @@ Puis, sa chance tombera à 3 chances sur 5.
 - Le fonctionnement est identique pour les portes à cartes. Qu'on reussise ou non d'ouvrir ou d'esquiver, une chance se retire.
 - Si on a de base 5 tentatives pour esquiver un SCP, chaque essai fait perdre 20% de reussite à la suivante.
 - Si on a de base 10 tentatives pour ouvrir une porte, chaque essai fait perdre 10% de reussite à la suivante.
-
+- SCP-181 spawn s'il y a un minimum d'1 classe-D.
 
 -----------------
 
@@ -72,10 +73,10 @@ The more you try, the less chance you will have.
 
 # How probabilities works
 
-Example of "181.txt"'s configuration :
-- #max_181_dodge_tries:5
-- #max_181_door_tries:10
-- #minimum_classe_d:1
+Example of "config.txt"'s configuration :
+- max_181_dodge_tries: 5
+- max_181_door_tries: 10
+- minimum_classe_d: 1
 
 The first time a SCP attack the player, this one have 5 chances out of 5 to dodge it (the first attack always will be cancelled)
 Then, the player will have 4 chances out of 5 to dodge a SCP's attack.
@@ -83,3 +84,15 @@ Then, the player will have 4 chances out of 5 to dodge a SCP's attack.
 
 - If you have 5 attempts to dodge a SCP, each attempt will reduce the chance of dodging the next SCP attack by 20%.
 - If you have 10 attempts to open a door, each attempt will reduce the chance of opening a restricted door by 10%.
+- SCP-181 spawns if there's a minimum of 1 Class-D.
+
+
+-----------------
+
+# Config.txt
+
+Config Option | Value Type | Default Value | Description
+--- | :---: | :---: | ---
+max_181_dodge_tries | Integer | 5 | How many attempts SCP-181 has to dodge SCP's attacks
+max_181_door_tries | Integer | 10 | How many attempts SCP-181 has to open restricted doors
+minimum_classe_d | Integer | 1 | How many Class-D must spawn to make spawn SCP-181
