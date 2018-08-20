@@ -11,7 +11,7 @@ using System.IO;
 
 namespace SCP181
 {
-    class SCP181EventHandler : IEventHandlerRoundStart, IEventHandlerRoundEnd, IEventHandlerPlayerDropItem, IEventHandlerPlayerHurt, IEventHandlerPlayerDie, IEventHandlerDoorAccess, IEventHandlerSetRole, ICommandHandler
+    class SCP181EventHandler : IEventHandlerRoundStart, IEventHandlerRoundEnd, IEventHandlerPlayerHurt, IEventHandlerPlayerDie, IEventHandlerDoorAccess, IEventHandlerSetRole, ICommandHandler
     {
 
         #region Vars
@@ -89,16 +89,6 @@ namespace SCP181
 
         #endregion
 
-        #region OnPlayerDropItem
-
-        public void OnPlayerDropItem(PlayerDropItemEvent ev)
-        {
-            //plugin.Info(ev.Player.Name + "jette un objet au sol");
-            //if (ev && ev.Player.TeamRole.Role == Role.CLASSD) ev.Player.GiveItem(ItemType.CUP); //Etant donné que le gobelet permet de savoir si un joueur est SCP ou non, on redonnera l'objet au joueur si celui-ci veut le retirer de son inventaire
-        }
-
-        #endregion
-
         #region OnPlayerHurt
 
         public void OnPlayerHurt(PlayerHurtEvent ev)
@@ -130,7 +120,6 @@ namespace SCP181
                             }
                         }
                     }
-                    
                 }
             }
         }
