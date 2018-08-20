@@ -32,6 +32,7 @@ namespace SCP181
         public SCP181EventHandler(Plugin plugin)
         {
             this.plugin = plugin;
+            players = new List<Player>();
         }
 
         #endregion
@@ -40,6 +41,7 @@ namespace SCP181
 
         public void OnRoundStart(RoundStartEvent ev)
         {
+            players = ev.Server.GetPlayers();
             enabled = plugin.GetConfigBool("enable_squal_scp_181");
             if(enabled)
             {
@@ -48,8 +50,7 @@ namespace SCP181
                 minimum_classe_d = plugin.GetConfigInt("minimum_classe_d");
 
                 List<Player> list = new List<Player>();
-                int index;
-                if (players.Count == 0) plugin.Info("Pas assez de Classe-D pour devenir SCP-181");
+                if (players.Count == 0) plugin.Info("Pas assez de joueurs pour devenir SCP-181");
                 else
                 {
                     //S'il n'y a aucun joueur, on log le fait qu'il n'y a aucun classe D
@@ -61,12 +62,13 @@ namespace SCP181
                     if (list.Count < minimum_classe_d) plugin.Info("Pas assez de classe D pour faire spawn SCP-181-");
                     else
                     {
-                        index = UnityEngine.Random.Range(0, list.Count);
+                        int index = UnityEngine.Random.Range(0, list.Count);
                         Playerchosen = list[index]; //"players" ne contenant que des classes D, nous tirons une personne au hasard entre 0 et le nombre de Classe-D en début de round.
                         plugin.Info(Playerchosen.Name + " devient SCP-181.");
-                        //Playerchosen.GiveItem(ItemType.CUP); //On donne à l'élu un objet impossible à obtenir en jeu
+                        Playerchosen.GiveItem(ItemType.CUP); //On donne à l'élu un objet impossible à obtenir en jeu
                     }
                 }
+                list.Clear();
             }
             
         }
