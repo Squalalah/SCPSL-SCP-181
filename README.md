@@ -23,13 +23,13 @@ Au fur et à mesure des essais, la chance de SCP-181 diminue.
 # Modification des probabilités de SCP-181
 
 - Lancez le serveur une première fois avec le plugin
-- Une fois fait, l'arrêter, puis modifier le fichier "squal_plugins_conf/181.txt" à la source du serveur
+- Une fois fait, l'arrêter, puis modifier le fichier "config.txt" de votre serveur pour rajouter les 3 lignes de configuration tout en bas du README.
 - Modifier uniquement les chiffres, et aucun nombre à virgule (nombre d'utilisations possibles avant que le pouvoir disparaisse)
 
 
 # Fonctionnement des probabilités
 
-En partant du principe de cette configuration de 181.txt :
+En partant du principe de cette configuration du config.txt :
 - max_181_dodge_tries: 5
 - max_181_door_tries: 10
 - minimum_classe_d: 1
@@ -62,7 +62,7 @@ The more you try, the less chance you will have.
 # Installation
 
 - Move "SCP181Event.dll" in "sm_plugins" server's folder.
-- Launch the server once to initialize the plugin's config (squal_plugins_conf/181.txt)
+- Launch the server and enjoy ! Don't forget to add the config lines in the config.txt of your server.
 
 
 # SCP-181's probabilities modification
