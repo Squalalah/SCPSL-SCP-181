@@ -93,6 +93,7 @@ Then, the player will have 4 chances out of 5 to dodge a SCP's attack.
 
 Config Option | Value Type | Default Value | Description
 --- | :---: | :---: | ---
+enable_squal_scp_181 | Boolean | true | Enable or not the plugin
 max_181_dodge_tries | Integer | 5 | How many attempts SCP-181 has to dodge SCP's attacks
 max_181_door_tries | Integer | 10 | How many attempts SCP-181 has to open restricted doors
 minimum_classe_d | Integer | 1 | How many Class-D must spawn to make spawn SCP-181
