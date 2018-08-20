@@ -32,7 +32,7 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Desktop\Smod2-3.1.11\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Smod2">
       <HintPath>..\Smod2.dll</HintPath>
@@ -45,8 +45,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory\SCPSL_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>E:\Program Files (x86)\Steam\steamapps\common\SCP Secret Laboratory\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>..\..\..\..\..\..\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll</HintPath>

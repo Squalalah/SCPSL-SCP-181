@@ -24,7 +24,7 @@ namespace SCP181
         private int minimum_classe_d = 1;
         private int tries = 0; //nombre de tentatives d'esquive des attaques de SCP
         private int door_tries = 0; //nombre de tentatives d'ouvertures de portes restreintes
-        
+
         #endregion
 
         #region Class SCP181EventHandler
@@ -34,63 +34,18 @@ namespace SCP181
             this.plugin = plugin;
 
             plugin.Info("SCP181EventHandler créer");
-            if (!System.IO.File.Exists("squal_plugins_conf/SCP181Event.txt")) Rewritefile();
-            else ReadFile();
         }
 
-        #endregion
-
-        #region Custom Rewritefile()
-
-        /// <summary>
-        /// Permet de réecrire le fichier SCP181Event.txt en cas de problème de mauvaise édition du fichier
-        /// </summary>
-        public void Rewritefile()
-        {
-            string text = "#max_181_dodge_tries:" + max_tries + System.Environment.NewLine
-                    + "#max_181_door_tries:" + max_door_tries + System.Environment.NewLine
-                    + "#minimum_classe_d:" + minimum_classe_d;
-            if (!Directory.Exists("squal_plugins_conf")) Directory.CreateDirectory("squal_plugins_conf");
-            System.IO.File.WriteAllText("squal_plugins_conf/SCP181Event.txt", text);
-            plugin.Info("Le nombre de tentative d'esquive de SCP-181 est fixé à : " + max_tries);
-            plugin.Info("Le nombre de tentative d'ouverture de portes de SCP-181 est fixé à : " + max_door_tries);
-            plugin.Info("Le nombre minimum de classe pour le spawn de SCP-181 est fixé à : " + minimum_classe_d);
-        }
-
-        #endregion
-
-        #region ReadFile
-        public void ReadFile()
-        {
-            string[] content = System.IO.File.ReadAllLines("squal_plugins_conf/SCP181Event.txt");
-            string[] value;
-            if (content.Length != 3) Rewritefile();
-            else
-            {
-                foreach (string s in content)
-                {
-                    value = s.Split(':');
-                    try
-                    {
-                        if (value[0] == "#max_181_dodge_tries") max_tries = int.Parse(value[1]);
-                        else if (value[0] == "#max_181_door_tries") max_door_tries = int.Parse(value[1]);
-                        else if (value[0] == "#minimum_classe_d") minimum_classe_d = int.Parse(value[1]);
-                        else Rewritefile();
-                    }
-                    catch { Rewritefile(); }
-                }
-            }
-            plugin.Info("Le nombre de tentative d'esquive de SCP-181 est fixé à : " + max_tries);
-            plugin.Info("Le nombre de tentative d'ouverture de portes de SCP-181 est fixé à : " + max_door_tries);
-            plugin.Info("Le nombre minimum de classe pour le spawn de SCP-181 est fixé à : " + minimum_classe_d);
-        }
         #endregion
 
         #region OnRoundStart
 
         public void OnRoundStart(RoundStartEvent ev)
         {
-            players = plugin.pluginManager.Server.GetPlayers(); //On recupère tout les joueurs au démarrage du Round (juste avant le spawn)
+            max_tries = plugin.GetConfigInt("max_181_dodge_tries"); 
+            max_door_tries = plugin.GetConfigInt("max_181_door_tries");
+            minimum_classe_d = plugin.GetConfigInt("minimum_classe_d");
+
             List<Player> list = new List<Player>();
             int index;
             if (players.Count == 0) plugin.Info("Pas assez de Classe-D pour devenir SCP-181");
@@ -204,7 +159,6 @@ namespace SCP181
         {
             if (Playerchosen.SteamId == ev.Player.SteamId)
             {
-                plugin.Info("Playerchosen == ev.player");
                 try
                 {
                     Smod2.API.Item itemhandle = ev.Player.GetCurrentItem();

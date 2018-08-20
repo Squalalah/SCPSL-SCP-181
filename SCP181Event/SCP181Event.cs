@@ -53,8 +53,18 @@ namespace SCP181
             SCP181EventHandler eventh = new SCP181EventHandler(this);
             // Register with priority
             // On enregistre chaque EventHandler qu'on a utilisé.
+            this.AddConfig(new Smod2.Config.ConfigSetting("max_181_dodge_tries", 5, Smod2.Config.SettingType.NUMERIC, true, "Nombre de fois que SCP-181 peut esquiver les attaques de SCP"));
+            this.AddConfig(new Smod2.Config.ConfigSetting("max_181_door_tries", 10, Smod2.Config.SettingType.NUMERIC, true, "Nombre de fois que SCP-181 peut ouvrir des portes vérouillés"));
+            this.AddConfig(new Smod2.Config.ConfigSetting("minimum_classe_d", 1, Smod2.Config.SettingType.NUMERIC, true, "Minimum de classe-D necessaire pour faire spawn SCP-181"));
             this.AddEventHandlers(eventh, Priority.Highest);
             this.AddCommand("scp181", eventh);
+
+            /*
+             *  #max_181_dodge_tries:5
+                #max_181_door_tries:10
+                #minimum_classe_d:1
+             * 
+             * */
         }
     }
 }
