@@ -98,7 +98,7 @@ namespace SCP181
                 //plugin.Info(ev.Attacker.Name + " attacked " + ev.Player.Name);
                 //plugin.Info("Damage received : " + ev.Damage);
                 //plugin.Info("DamageType : " + ev.DamageType);
-                if (ev.Player.GetItemIndex(ItemType.CUP) >= 0)
+                if (ev.Player.HasItem(ItemType.CUP))
                 {
                     //plugin.Info("Le joueur has a CUP");
                     //plugin.Info("teamrole attacker = " + ev.Attacker.TeamRole.Name);
@@ -132,7 +132,7 @@ namespace SCP181
         {
             if (enabled)
             {
-                if (ev.Player.SteamId == Playerchosen.SteamId) Playerchosen = null;
+               if(ev.Player.HasItem(ItemType.CUP)) Playerchosen = null;
             }
         }
 
@@ -144,7 +144,7 @@ namespace SCP181
         {
             if (enabled)
             {
-                if(ev.Player.GetItemIndex(ItemType.CUP) >= 0)
+                if(ev.Player.HasItem(ItemType.CUP))
                 {
                     try
                     {
@@ -185,7 +185,7 @@ namespace SCP181
 
         public void OnSetRole(PlayerSetRoleEvent ev)
         {
-            if (ev.Player.HasItem(ItemType.CUP) && ev.Player.SteamId == Playerchosen.SteamId) ev.Player.GetInventory().RemoveAt(ev.Player.GetItemIndex(ItemType.CUP));
+            if (ev.Player.HasItem(ItemType.CUP)) ev.Player.GetInventory().RemoveAt(ev.Player.GetItemIndex(ItemType.CUP));
         }
         #endregion
 
