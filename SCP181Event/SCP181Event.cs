@@ -13,10 +13,10 @@ namespace SCP181
         name = "SCP-181",
         description = "Un Classe-D aléatoire devient SCP-181 et défie les lois de la probabilité.",
         id = "squal.181.event",
-        version = "1.3.2",
+        version = "1.3.3",
         SmodMajor = 3,
-        SmodMinor = 1,
-        SmodRevision = 15
+        SmodMinor = 2,
+        SmodRevision = 1
         )]
 
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@ namespace SCP181
             this.AddConfig(new Smod2.Config.ConfigSetting("max_181_dodge_tries", 5, Smod2.Config.SettingType.NUMERIC, true, "Nombre de fois que SCP-181 peut esquiver les attaques de SCP"));
             this.AddConfig(new Smod2.Config.ConfigSetting("max_181_door_tries", 10, Smod2.Config.SettingType.NUMERIC, true, "Nombre de fois que SCP-181 peut ouvrir des portes vérouillés"));
             this.AddConfig(new Smod2.Config.ConfigSetting("minimum_classe_d", 1, Smod2.Config.SettingType.NUMERIC, true, "Minimum de classe-D necessaire pour faire spawn SCP-181"));
-            this.AddEventHandlers(eventh, Priority.Highest);
+            this.AddEventHandlers(eventh, Priority.Normal);
             this.AddCommand("scp181", eventh);
 
             /*

@@ -11,7 +11,7 @@ using System.IO;
 
 namespace SCP181
 {
-    class SCP181EventHandler : IEventHandlerRoundStart, IEventHandlerRoundEnd, IEventHandlerPlayerHurt, IEventHandlerPlayerDie, IEventHandlerDoorAccess, IEventHandlerSetRole, ICommandHandler
+    class SCP181EventHandler : IEventHandlerRoundStart, IEventHandlerRoundEnd, IEventHandlerPlayerHurt, IEventHandlerPlayerDie, IEventHandlerDoorAccess, IEventHandlerSetRole, ICommandHandler, IEventHandlerPlayerDropItem
     {
 
         #region Vars
@@ -98,7 +98,7 @@ namespace SCP181
                 //plugin.Info(ev.Attacker.Name + " attacked " + ev.Player.Name);
                 //plugin.Info("Damage received : " + ev.Damage);
                 //plugin.Info("DamageType : " + ev.DamageType);
-                if (Playerchosen.SteamId == ev.Player.SteamId)
+                if (ev.Player.GetItemIndex(ItemType.CUP) >= 0)
                 {
                     //plugin.Info("Le joueur has a CUP");
                     //plugin.Info("teamrole attacker = " + ev.Attacker.TeamRole.Name);
@@ -144,18 +144,17 @@ namespace SCP181
         {
             if (enabled)
             {
-                if (Playerchosen.SteamId == ev.Player.SteamId)
+                if(ev.Player.GetItemIndex(ItemType.CUP) >= 0)
                 {
                     try
                     {
                         Smod2.API.Item itemhandle = ev.Player.GetCurrentItem();
-                        //plugin.Info("Object held by the player : " + itemhandle);
                     }
                     catch
                     {
                         if (ev.Door.Permission.Length > 0) //If the door has permissions (restricted card)
                         {
-                            if(max_door_tries != 0)
+                            if (max_door_tries != 0)
                             {
                                 if (UnityEngine.Random.Range(0, max_door_tries + 1) > door_tries)
                                 {
@@ -168,6 +167,16 @@ namespace SCP181
                         }
                     }
                 }
+            }
+        }
+        #endregion
+
+        #region OnPlayerDropItem
+        public void OnPlayerDropItem(PlayerDropItemEvent ev)
+        {
+            if(ev.Item.ItemType == ItemType.CUP)
+            {
+                ev.Allow = false;
             }
         }
         #endregion
