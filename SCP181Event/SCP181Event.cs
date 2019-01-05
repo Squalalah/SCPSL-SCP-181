@@ -13,7 +13,7 @@ namespace SCP181
         name = "SCP-181",
         description = "Un Classe-D aléatoire devient SCP-181 et défie les lois de la probabilité.",
         id = "squal.181.event",
-        version = "1.3.3",
+        version = "1.3.4",
         SmodMajor = 3,
         SmodMinor = 2,
         SmodRevision = 1
